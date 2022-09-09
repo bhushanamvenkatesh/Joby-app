@@ -1,0 +1,10 @@
+.each-type {
+  display: flex;
+  flex-direction: row;
+  margin: 0px;
+}
+
+.each-label {
+  color: white;
+  margin: 5px;
+}

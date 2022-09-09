@@ -1,0 +1,104 @@
+.each-job-descriptions {
+  display: flex;
+  flex-direction: column;
+  background-color: #272727;
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.company-logo {
+  height: 10%;
+  width: 10%;
+  margin: 15px;
+}
+.log-title-container {
+  display: flex;
+  flex-direction: column;
+
+  padding: 10px;
+  width: 100%;
+}
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+p {
+  color: white;
+  margin: 5px;
+}
+
+h1 {
+  color: white;
+}
+.star-icon {
+  height: 35px;
+  margin: 5px;
+}
+
+.display-row {
+  display: flex;
+  margin-top: 0px;
+  align-items: center;
+}
+
+.star {
+  color: yellow;
+}
+
+.location-package {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+}
+
+.location-package-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 40%;
+}
+
+.package {
+  width: 6%;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.location-icon {
+  background-color: white;
+  margin: 5px;
+}
+
+.employment-type {
+  width: 100%;
+}
+
+.job-icon {
+  height: 30px;
+  width: 30px;
+  margin: 5px;
+}
+.hr-line {
+  width: 100%;
+  color: white;
+}
+.description {
+  width: 100%;
+  margin-top: 0px;
+}
+
+* {
+  font-family: 'Roboto';
+}
+
+.link-style {
+  text-decoration: none;
+}
