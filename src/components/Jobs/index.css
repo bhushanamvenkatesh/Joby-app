@@ -24,7 +24,7 @@
   flex-direction: column;
   background-size: cover;
   padding: 25px;
-  height: 25%;
+
   width: 90%;
   margin: 10px;
 }
@@ -97,4 +97,20 @@ p {
 .profile-name {
   color: #4f46e5;
   font-weight: 600;
+}
+.loader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 30%;
+  width: 90%;
+}
+
+.retry-button {
+  color: white;
+  padding: 15px;
+  background-color: blue;
+  border: none;
+  border-radius: 5px;
 }

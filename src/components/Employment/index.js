@@ -1,11 +1,14 @@
 import './index.css'
 
 const Employment = props => {
-  const onClickEmploymentType = () => {
-    console.log('clicked')
-  }
-  const {eachItem} = props
+  const {eachItem, onChangeJobType} = props
   const {label, employmentTypeId} = eachItem
+
+  const onClickEmploymentType = event => {
+    if (event.target.checked === true) {
+      onChangeJobType(employmentTypeId)
+    }
+  }
 
   return (
     <li className="each-type">
