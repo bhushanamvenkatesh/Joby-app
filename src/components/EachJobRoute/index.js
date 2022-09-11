@@ -5,7 +5,7 @@ import {HiLocationMarker} from 'react-icons/hi'
 
 const EachJobRoute = props => {
   const {eachItem} = props
-  console.log(eachItem)
+
   const {
     companyLogoUrl,
     employmentType,
