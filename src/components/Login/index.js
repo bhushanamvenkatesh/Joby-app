@@ -19,7 +19,7 @@ class Login extends Component {
     const {username} = this.state
     return (
       <div className="username-field">
-        <label htmlFor="username">USER NAME</label>
+        <label htmlFor="username">USERNAME</label>
         <input
           id="username"
           type="text"
@@ -37,7 +37,7 @@ class Login extends Component {
 
     return (
       <div className="username-field">
-        <label htmlFor="pass">PASS WORD</label>
+        <label htmlFor="pass">PASSWORD</label>
         <input
           id="pass"
           type="password"

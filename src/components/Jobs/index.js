@@ -60,7 +60,7 @@ class Jobs extends Component {
   state = {
     jobsData: [],
     profileDetails: {},
-
+    jobfetchStatus: '',
     profileStatus: profileConstants.initial,
     searchInput: '',
     employmentType: '',
@@ -108,6 +108,7 @@ class Jobs extends Component {
 
   onJobsFetchFailure = () => {
     console.log('fails')
+    this.setState({jobfetchStatus: profileConstants.fail})
   }
 
   getData = async () => {
@@ -151,7 +152,13 @@ class Jobs extends Component {
 
   renderLoader = () => (
     <div className="loader">
-      <Loader type="TailSpin" color="#2f2f2f" height={50} width={50} />
+      <Loader
+        type="TailSpin"
+        color="#2f2f2f"
+        height={50}
+        width={50}
+        testid="loader"
+      />
     </div>
   )
 
@@ -266,6 +273,7 @@ class Jobs extends Component {
   }
 
   render() {
+    const {jobfetchStatus} = this.state
     return (
       <div>
         <Header />

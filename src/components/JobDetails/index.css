@@ -64,6 +64,7 @@ h1 {
 
 .star {
   color: yellow;
+  margin: 5px;
 }
 
 .location-package {
@@ -164,4 +165,66 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
+  justify-content: center;
+}
+
+.simi-container {
+  background-color: #272727;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+  width: 25%;
+  border-radius: 15px;
+}
+
+.logo-title {
+  display: flex;
+  flex-direction: row;
+}
+
+.location-type {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+
+  margin: 10px;
+}
+
+.location {
+  border: 1px solid red;
+}
+
+.type {
+  margin-left: 30%;
+}
+
+.logo-image {
+  height: 70%;
+}
+
+.similar-title {
+  font-weight: 600;
+  margin: 10px;
+  font-size: 20px;
+}
+
+.rating-star {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.visit-description {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: blue;
+}
+
+.visit {
+  font-size: 25px;
+  text-decoration: none;
+  margin-right: 5px;
 }
