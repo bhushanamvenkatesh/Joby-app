@@ -60,7 +60,7 @@ class Jobs extends Component {
   state = {
     jobsData: [],
     profileDetails: {},
-    jobfetchStatus: '',
+    jobfetchStatus: false,
     profileStatus: profileConstants.initial,
     searchInput: '',
     employmentType: '',
@@ -75,7 +75,7 @@ class Jobs extends Component {
   getJobsData = async () => {
     const {employmentType, minimumPackage, searchInput} = this.state
     const token = Cookies.get('jwt_token')
-
+    console.log('clicked')
     const apiUrl = `https://apis.ccbp.in/jobs?employment_type=${employmentType}&minimum_package=${minimumPackage}&search=${searchInput}`
 
     const options = {
@@ -99,7 +99,7 @@ class Jobs extends Component {
       title: eachJob.title,
     }))
 
-    this.setState({jobsData: formattedJobsData})
+    this.setState({jobsData: formattedJobsData, jobfetchStatus: false})
 
     if (data.status_code === 400) {
       this.onJobsFetchFailure()
@@ -108,7 +108,7 @@ class Jobs extends Component {
 
   onJobsFetchFailure = () => {
     console.log('fails')
-    this.setState({jobfetchStatus: profileConstants.fail})
+    this.setState({jobfetchStatus: true})
   }
 
   getData = async () => {
@@ -133,14 +133,13 @@ class Jobs extends Component {
         profileDetails: formattedProfile.profileDetails,
         profileStatus: profileConstants.success,
       })
-    }
-
-    if (data.status_code === 400) {
-      this.onFailureFetch()
+    } else if (response.ok !== true) {
+      // (data.status_code === 400) {
+      this.onProfileFetchFailure()
     }
   }
 
-  onFailureFetch = () => {
+  onProfileFetchFailure = () => {
     this.setState({profileStatus: profileConstants.fail})
   }
 
@@ -151,14 +150,8 @@ class Jobs extends Component {
   })
 
   renderLoader = () => (
-    <div className="loader">
-      <Loader
-        type="TailSpin"
-        color="#2f2f2f"
-        height={50}
-        width={50}
-        testid="loader"
-      />
+    <div className="loader" /* testid="loader" */>
+      <Loader type="TailSpin" color="#2f2f2f" height={50} width={50} />
     </div>
   )
 
@@ -168,7 +161,7 @@ class Jobs extends Component {
     const {profileImageUrl, name, shortBio} = profileDetails
     return (
       <div className="profile-container">
-        <img src={profileImageUrl} alt={name} className="profile-dp" />
+        <img src={profileImageUrl} alt="profile" className="profile-dp" />
         <h1 className="profile-name">{name}</h1>
         <p className="role">{shortBio}</p>
       </div>
@@ -207,7 +200,11 @@ class Jobs extends Component {
   onChangeJobType = typeId => {
     array.push(typeId)
 
-    this.setState({employmentType: array.join(',')})
+    this.setState({employmentType: array.join(',')}, this.getJobsData)
+  }
+
+  onChangePackage = sal => {
+    this.setState({minimumPackage: sal}, this.getJobsData)
   }
 
   renderFilterSection = () => (
@@ -216,7 +213,7 @@ class Jobs extends Component {
 
       <hr className="h-line" />
       <div className="type-of-employement">
-        <p>Type of Employment</p>
+        <h1>Type of Employment</h1>
         <ul className="job-category-list">
           {employmentTypesList.map(eachItem => (
             <Employment
@@ -228,10 +225,14 @@ class Jobs extends Component {
         </ul>
         <hr className="h-line" />
         <div>
-          <p>Salary Range</p>
+          <h1>Salary Range</h1>
           <ul className="job-category-list">
             {salaryRangesList.map(eachItem => (
-              <SalaryRange eachItem={eachItem} key={eachItem.salaryRangeId} />
+              <SalaryRange
+                eachItem={eachItem}
+                key={eachItem.salaryRangeId}
+                onChangePackage={this.onChangePackage}
+              />
             ))}
           </ul>
         </div>
@@ -245,10 +246,28 @@ class Jobs extends Component {
 
   onClickSearchIcon = () => {
     console.log('search-icon-clicked')
+    this.getJobsData()
   }
 
   renderJobsSection = () => {
     const {jobsData} = this.state
+
+    const renderNoJobs = () => (
+      <div className="job-failure-section">
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png "
+          alt="no jobs"
+        />
+      </div>
+    )
+
+    const renderList = () => (
+      <ul className="jobs-list">
+        {jobsData.map(eachItem => (
+          <EachJobRoute eachItem={eachItem} key={eachItem.id} />
+        ))}
+      </ul>
+    )
 
     return (
       <div className="jobs-results">
@@ -259,18 +278,41 @@ class Jobs extends Component {
             placeholder="Search"
             onChange={this.onClickSearchInput}
           />
-          <BsSearch className="search-icon" onClick={this.onClickSearchIcon} />
+          <div>
+            <button
+              onClick={this.onClickSearchIcon}
+              className="search-btn"
+              // testid="searchButton"
+              type="button"
+            >
+              <BsSearch className="search-icon" />
+            </button>
+            {/* <BsSearch
+              className="search-icon"
+              onClick={this.onClickSearchIcon}
+            /> */}
+          </div>
+          {}
         </div>
-        <ul className="jobs-list">
-          {jobsData.map(eachItem => (
-            <EachJobRoute eachItem={eachItem} key={eachItem.id} />
-          ))}
-        </ul>
-
-        <p>jobs result</p>
+        {jobsData.length === 0 ? renderNoJobs() : renderList()}
       </div>
     )
   }
+
+  renderJobsSectionFailure = () => (
+    <div className="job-failure-section">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
+        alt="failure view"
+        className=""
+      />
+      <h1>Oops! Something Went Wrong</h1>
+      <p>We cannot seem to find the page you are looking for.</p>
+      <button className="retry" type="button" onClick={this.getJobsData}>
+        Retry
+      </button>
+    </div>
+  )
 
   render() {
     const {jobfetchStatus} = this.state
@@ -279,7 +321,9 @@ class Jobs extends Component {
         <Header />
         <div className="filter-jobs-section">
           {this.renderFilterSection()}
-          {this.renderJobsSection()}
+          {jobfetchStatus
+            ? this.renderJobsSectionFailure()
+            : this.renderJobsSection()}
         </div>
       </div>
     )

@@ -114,3 +114,18 @@ p {
   border: none;
   border-radius: 5px;
 }
+
+.job-failure-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.retry {
+  padding: 10px;
+  margin: 8px;
+  background-color: blue;
+  color: white;
+  border-radius: 10px;
+}

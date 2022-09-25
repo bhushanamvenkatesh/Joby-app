@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import {Redirect} from 'react-router-dom'
 import {Component} from 'react'
 import {GrShare} from 'react-icons/gr'
 import {AiFillStar, AiOutlineMail} from 'react-icons/ai'
@@ -60,12 +61,19 @@ import './index.css'
 //   title: 'Devops Engineer',
 // }
 
+const jobDetailsConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+}
+
 class JobDetails extends Component {
-  state = {isLoading: true, eachjobDetails: {}}
+  state = {
+    eachjobDetails: {},
+    jobDetailsStatus: jobDetailsConstants.initial,
+  }
 
   componentDidMount() {
-    // console.log('method called')
-
     this.getData()
   }
 
@@ -90,7 +98,13 @@ class JobDetails extends Component {
         jobDetails: data.job_details,
         similarjobs: data.similar_jobs,
       }
-      this.setState({isLoading: false, eachjobDetails: formattedData})
+      this.setState({
+        // isLoading: false,
+        eachjobDetails: formattedData,
+        jobDetailsStatus: jobDetailsConstants.success,
+      })
+    } else {
+      this.setState({jobDetailsStatus: jobDetailsConstants.failure})
     }
   }
 
@@ -121,6 +135,7 @@ class JobDetails extends Component {
 
   getSkillsList = formattedJobData => {
     const lista = formattedJobData.skills
+    console.log(formattedJobData.skills)
 
     const item = lista.map(each => (
       <li className="each-skill" key={each.id}>
@@ -288,14 +303,53 @@ class JobDetails extends Component {
     )
   }
 
+  onClickRetryJobDetails = () => {
+    const {history} = this.props
+    console.log('clicked')
+    return <Redirect component={JobDetails} />
+  }
+
+  renderJobDetailsFailure = () => (
+    <div className="JobDetails-failure-container">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
+        alt="not found"
+      />
+      <h1>Oops something went wrong</h1>
+      <p>we can not seem to find the page you are looking for</p>
+      <button
+        className="retry"
+        type="button"
+        onClick={this.onClickRetryJobDetails}
+      >
+        Retry
+      </button>
+    </div>
+  )
+  //  {isLoading ? this.renderLoader() : this.renderJobData()}
+
+  renderResult = () => {
+    const {jobDetailsStatus} = this.state
+    switch (jobDetailsStatus) {
+      case jobDetailsConstants.initial:
+        return this.renderLoader()
+
+      case jobDetailsConstants.success:
+        return this.renderJobData()
+
+      case jobDetailsConstants.failure:
+        return this.renderJobDetailsFailure()
+
+      default:
+        return null
+    }
+  }
+
   render() {
-    const {isLoading} = this.state
     return (
       <>
         <Header />
-        <div className="job-details-container">
-          {isLoading ? this.renderLoader() : this.renderJobData()}
-        </div>
+        <div className="job-details-container">{this.renderResult()}</div>
       </>
     )
   }

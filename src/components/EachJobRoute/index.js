@@ -21,7 +21,11 @@ const EachJobRoute = props => {
     <Link to={`/jobs/${id}`} className="link-style">
       <li className="each-job-descriptions">
         <div className="logo-container">
-          <img src={companyLogoUrl} alt={title} className="company-logo" />
+          <img
+            src={companyLogoUrl}
+            alt="company logo"
+            className="company-logo"
+          />
           <div className="log-title-container">
             <h1>{title}</h1>
             <div className="display-row">
